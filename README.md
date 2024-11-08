@@ -16,7 +16,7 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 24-27 --> community-based analyses: interaction networks
 28-31 --> member-based analyses: interaction networks
 32-35 --> member-based analyses: differential abundance analysis
-36-40--> functional prediction analyses
+36-40 --> functional prediction analyses
 ```
 
 #### ``00_Palettes.R``
@@ -44,7 +44,7 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 1. Subsample to 1000 reads
 2. Analyse sample-to-blank distances for both the original and the decontaminated (at 0.1) ASV abundance tables
 3. Compare microbial communities (square root transformed Bray-Curtis distances) after decontamination
-4. Run PERMANOVA ($vegdist(\sqrt{asv\_abtab}) \sim species$) and PERMDISP (=> ``species`` significant)
+4. Run PERMANOVA and PERMDISP (=> ``species`` significant)
 5. Compare microbial communities (square root transformed Bray-Curtis distances) by taxonomic group
 
 #### ``05_Generate-Cleaned-Tables_Host-Associated.R``
@@ -72,7 +72,7 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 1. Subsample to 1000 reads
 2. Analyse sample-to-blank distances for both the original and the decontaminated (at 0.2) ASV abundance tables
 3. Compare microbial communities (square root transformed Bray-Curtis distances) after decontamination
-4. Run PERMANOVA ($vegdist(\sqrt{asv\_abtab}) \sim species$) and PERMDISP (=> ``species`` significant)
+4. Run PERMANOVA and PERMDISP (=> ``species`` significant)
 5. Compare microbial communities (square root transformed Bray-Curtis distances) by taxonomic group
 
 #### ``10_Generate-Cleaned-Tables_Free-living.R``
@@ -100,7 +100,7 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 3. Write fasta files (``asv_abtab_rarefied_{1,50}.fasta``)
 
 #### ``15_Annotate-Taxonomy.R``
-1. Assign taxonomic info to differentially abundant ASVs using ``silva_nr99_v138.1_train_set.fa``
+1. Assign taxonomic info to ASVs using ``silva_nr99_v138.1_train_set.fa``
 2. Write taxonomy file (``asv_dat_taxinfo.tsv``)
 
 #### ``16_Compute-BC-Dissimilarity.R``
@@ -118,7 +118,7 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 
 #### ``18_Compute-Shared.R``
 1. Load all 50 rarefied ASV abundance tables and the associated metadata
-2. Compute the $designdist(asv\_abtab,method="J",terms="binary")$ for each of the 50 ASV tables and save as a list
+2. Compute the number of shared ASVs for each of the 50 ASV tables and save as a list
 3. Set the diagonal to NA
 4. Reduce the list to a single distance table by taking the sum of the corresponding elements and calculating the mean by dividing by the length of the dataframe
 5. Write the number of shared ASVs table (``asv_shared.tsv``)
@@ -127,7 +127,7 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 **Compare the host-associated and exuded microbial communities by species/sample type**
 1. Load the square-root transformed Bray-Curtis distance table
 2. Perform a PCoA on the distances
-3. Run a PERMANOVA to test for differences explained by species ($asv\_bctab \sim species$) and PERMDISP (=> ``species`` significant)
+3. Run a PERMANOVA to test for differences explained by species and PERMDISP (=> ``species`` significant)
 
 #### ``20_ADiv_Host-Exudates.R``
 **Correlate alpha-diversity changes of exuded vs host-associated microbial communities**
@@ -135,9 +135,9 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 2. Plot exudate vs host Hill numbers by species and get correlation coefficient
 
 #### ``21_BDiv_Complexity_Host-Exudates.R``
-**Compare the host-associated and exuded microbial communities of hosts living in complex vs reduced reef communities**
+**Compare the host-associated and exuded microbial communities of hosts living in biodiverse vs degraded reef communities**
 1. Select samples from phase 2
-2. For each source and species, run a PERMANOVA to test for differences explained by the ambient community complexity ($asv\_bctab \sim treatment\_binary$)
+2. For each source and species, run a PERMANOVA to test for differences explained by the ambient community complexity
 
 #### ``22_BDiv_Specificity-Exudation.R``
 **Explore host-specificity and exudation**
@@ -147,7 +147,7 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 4. Plot exudate to control (x-axis) vs host to tank (y-axis)
 5. Draw an ellipse at 0.5 (half of the points lie within the ellipse)
 6. Use data to define cutoffs for groups (mean)
-7. Test whether the groups are significantly different ($manova(cbind(bc\_exudatetocontrol,bc\_hosttotank) \sim species)$) (=> ``species`` significant)
+7. Test whether the groups are significantly different (=> ``species`` significant)
 8. Add standard deviation to each data point (as one point is the mean of three distances)
 
 #### ``23_BDiv_Complexity_Specificity-Exudation.R``
@@ -156,8 +156,8 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 2. Transform the distance table into a 3-column dataframe
 3. Prepare the host-to-tank distance dataframe
 4. Prepare the exudates-to-incubation control dataframe
-5. Compare both distances of hosts living in a complex vs reduced reef community by species with ``p.adjust.method="holm"``
-6. Test whether the mean of the groups is significantly different as a response to treatment ($compare\_means(bc\_dissim \sim treatment\_binary)$)
+5. Compare both distances of hosts living in a biodiverse vs degraded reef community by species with ``p.adjust.method="holm"``
+6. Test whether the mean of the groups is significantly different as a response to treatment
 
 #### ``24_BDiv_Similarity-Between-Hosts.R``
 1. Select species samples from phase 2
@@ -176,8 +176,8 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 
 #### ``26_BDiv_Similarity-Richness-Network.R``
 1. Load edge and node files
-2. Compute similarity ratio between complex and reduced by calculating $0.5-\frac{similarity_{reduced}}{similarity_{complex}+similarity_{reduced}}$ (=> negative values mean the similarity between hosts is higher in a reduced habitat, positive values in a complex habitat; the higher the values the more the similarities between the two treatments differ)
-3. Compute richness ratio between complex and reduced by calculating $0.5-\frac{richness_{reduced}}{richness_{complex}+richness_{reduced}}$ (=> negative values mean the richness of a host is higher in a reduced habitat, positive values in a complex habitat; the higher the values the more the richness between the two treatments differ)
+2. Compute similarity ratio between biodiverse and degraded by calculating $0.5-\frac{similarity_{degraded}}{similarity_{biodiverse}+similarity_{degraded}}$ (=> negative values mean the similarity between hosts is higher in a degraded habitat, positive values in a biodiverse habitat; the higher the values the more the similarities between the two treatments differ)
+3. Compute richness ratio between biodiverse and degraded by calculating $0.5-\frac{richness_{degraded}}{richness_{biodiverse}+richness_{degraded}}$ (=> negative values mean the richness of a host is higher in a degraded habitat, positive values in a biodiverse habitat; the higher the values the more the richness between the two treatments differ)
 4. Initiate the network plot using the packages ``igraph`` and ``ggraph``
 5. Plot the network with colours denoting in which treatment the values are higher and line width/circle size indicating the magnitude of the difference
 
@@ -202,8 +202,8 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 
 #### ``30_ASVs_Shared-Unique-Network.R``
 1. Load edge and node files
-2. Compute shared ratio between complex and reduced by calculating $0.5-\frac{shared_{reduced}}{shared_{complex}+shared_{reduced}}$ (=> negative values mean the number of shared ASVs between hosts is higher in a reduced habitat, positive values in a complex habitat; the higher the values the more the number of shared ASVs between the two treatments differ)
-3. Compute unique ratio between complex and reduced by calculating $0.5-\frac{unique_{reduced}}{unique_{complex}+unique_{reduced}}$ (=> negative values mean the number of unique ASVs of a host is higher in a reduced habitat, positive values in a complex habitat; the higher the values the more the number of unique ASVs between the two treatments differ)
+2. Compute shared ratio between biodiverse and degraded by calculating $0.5-\frac{shared_{degraded}}{shared_{biodiverse}+shared_{degraded}}$ (=> negative values mean the number of shared ASVs between hosts is higher in a degraded habitat, positive values in a biodiverse habitat; the higher the values the more the number of shared ASVs between the two treatments differ)
+3. Compute unique ratio between biodiverse and degraded by calculating $0.5-\frac{unique_{degraded}}{unique_{biodiverse}+unique_{degraded}}$ (=> negative values mean the number of unique ASVs of a host is higher in a degraded habitat, positive values in a biodiverse habitat; the higher the values the more the number of unique ASVs between the two treatments differ)
 4. Initiate the network plot using the packages ``igraph`` and ``ggraph``
 5. Plot the network with colours denoting in which treatment the values are higher and line width/circle size indicating the magnitude of the difference
 
@@ -228,7 +228,7 @@ To reproduce the analysis, you need a local installation of git (clone the repos
 #### ``34_ASVs_DA_iTOL_LFC.R``
 **Prepare the compilated log-fold change file for iTOL**
 1. Merge the DA output
-2. Pull the significant log-fold changes between complex and reduced communities (``asv_diffab_lfc.tsv``)
+2. Pull the significant log-fold changes between biodiverse and degraded communities (``asv_diffab_lfc.tsv``)
 
 #### ``35_ASVs_DA_iTOL_Tree.R``
 **Examine the phylogeny of the differentially abundant ASVs (across host)**
@@ -294,7 +294,7 @@ pathway_pipeline.py -i /[INSERT PATH]/data/ko_abtab_sample.tsv \
 2. Load the KEGG pathway converted abundance table (``path_abun_unstrat.tsv.gz``) and extract pathways associated with metabolism, but remove global and overview maps
 3. Compute the square-root transformed Bray-Curtis distances
 4. Perform a PCoA on the distances
-5. Run a PERMANOVA to test for differences explained by species ($asv\_bctab \sim species$) and PERMDISP (=> ``species`` significant) and test pairwise using `pairwise.adonis2()`
+5. Run a PERMANOVA to test for differences explained by species and PERMDISP (=> ``species`` significant) and test pairwise using `pairwise.adonis2()`
 
 #### ``39_FunPred_Compute-KO-per-ASV-Abundances.R``
 1. Load all 50 generated predicted KO abundance files (``KO_predicted.tsv.gz``)
@@ -353,7 +353,7 @@ pathway_pipeline.py -i /[INSERT PATH]/data/ko_abtab_sample.tsv \
 - ``plate_number`` (numeric): number of 96-well plate (1&ndash;4)
 - ``plate_position`` (alphanumeric): position of sample on 96-well plate (rows: A&ndash;H; columns: 01&ndash;12)
 - ``plate_position_sequential`` (numeric): unique numeric position of sample on 96-well plate (plate 1: 1&ndash;96; plate 2: 97&ndash;192; etc)
-- ``biomass_extraction_mg`` (numeric trait): biomass used for homogenisation and biofilm enrichment, respectively (sponge and macroalgae); coral-mucus biomass was not weighed (instead, 100 $\mu$l of mucus was used) (only host-associated)
+- ``biomass_extraction_mg`` (numeric trait): biomass used for homogenisation and biofilm enrichment, respectively (sponge and macroalgae); coral-mucus biomass was not weighed (instead, 100 ul of mucus was used) (only host-associated)
 - ``gDNA_conc_ng_ul_QuantiFluor`` (numeric trait): genomic DNA concentration, measured with the Promega QuantiFluor dsDNA System (E2670); the accuracy at these low levels is not great and is simply indicative of an expected concentration range (only host-associated)
 - ``gDNA_conc_ng_ul`` (numeric trait): genomic DNA concentration, measured with the Qubit (1X HS kit)
 - ``primers`` (categorical): common name of the used forward and reverse primers (main reference for forward primer: Parada, A. E., Needham, D. M., & Fuhrman, J. A. (2016). Every base matters: assessing small subunit rRNA primers for marine microbiomes with mock communities, time series and global field samples. *Environmental microbiology*, *18*(5), 1403-1414. [doi.org/10.1111/1462-2920.13023](https://doi.org/10.1111/1462-2920.13023); for reverse primer: Apprill, A., McNally, S., Parsons, R., & Weber, L. (2015). Minor revision to V4 region SSU rRNA 806R gene primer greatly increases detection of SAR11 bacterioplankton. *Aquatic Microbial Ecology*, *75*(2), 129-137. [doi.org/10.3354/ame01753](https://doi.org/10.3354/ame01753))
