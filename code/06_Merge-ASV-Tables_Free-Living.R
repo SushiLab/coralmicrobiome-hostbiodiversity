@@ -1,5 +1,5 @@
 ## Project: Aquarium Microbiome
-## Script purpose: Merge ASV tables from WIED23-3 and WIED23-4
+## Script purpose: Merge ASV tables from raw_free-living_1 and raw_free-living_2
 ## Date: August 2023
 ## Author: Fabienne Wiederkehr
 
@@ -9,13 +9,13 @@ require(tidyverse)
 require(dada2)
 
 # Load data and filter out eukaryotic, chloroplast, and mitochondrial reads
-asv_dat1<-fread("../data/WIED23-3.asvs.tsv",sep="\t",header=TRUE,data.table=FALSE) %>%
+asv_dat1<-fread("../data/raw_free-living_1.asvs.tsv",sep="\t",header=TRUE,data.table=FALSE) %>%
   filter(!grepl("domain;unclassified|domain;Eukaryota|family;Mitochondria|order;Chloroplast",tax)) %>% #remove reads unclassified at domain level (removes short ASVs), eukaryotic reads, mitochondria and chloroplasts
   select(-c(asv,otu,uparse_info,tax)) %>%
   column_to_rownames("seq") %>%
   as.matrix() %>% t()
 
-asv_dat2<-fread("../data/WIED23-4.asvs.tsv",sep="\t",header=TRUE,data.table=FALSE) %>%
+asv_dat2<-fread("../data/raw_free-living_2.asvs.tsv",sep="\t",header=TRUE,data.table=FALSE) %>%
   filter(!grepl("domain;unclassified|domain;Eukaryota|family;Mitochondria|order;Chloroplast",tax)) %>% #remove reads unclassified at domain level (removes short ASVs), eukaryotic reads, mitochondria and chloroplasts
   select(-c(asv,otu,uparse_info,tax)) %>%
   column_to_rownames("seq") %>%
