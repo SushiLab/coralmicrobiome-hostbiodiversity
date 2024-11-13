@@ -2,7 +2,7 @@
 This is the repository associated with the manuscript **&#x00BB;Host-level biodiversity shapes the dynamics and networks within the coral reef microbiome&#x00AB;**. It contains all code for analyses and figures presented in the manuscript.
 
 ## Preparation
-To reproduce the analysis, you need a local installation of git (clone the repository with: `git clone git@github.com:SushiLab/reef-microbiomics-paper.git`) and R. Download the data from ==[Insert Zenodo URL]== into a directory named ``data`` at the same level as ``code``. As computational resources might be limited, we provide intermediary analyses files on Zenodo, too.
+To reproduce the analysis, you need a local installation of git (clone the repository with: `git clone git@github.com:SushiLab/reef-microbiomics-paper.git`) and R. Download the data from [https://zenodo.org/records/14131612](https://zenodo.org/records/14131612) into a directory named ``data`` at the same level as ``code``. As computational resources might be limited, we provide intermediary analyses files on Zenodo, too.
 
 ---
 
@@ -313,63 +313,3 @@ pathway_pipeline.py -i /[INSERT PATH]/data/ko_abtab_sample.tsv \
 7. Convert pathway abundance table to presence-absence and annotate
 8. Generate upset plot
 
----
-
-## Metadata
-==Name file and provide link==
-
-- ``id`` (ID): unique sample identifier (sample name)
-- ``sample`` (categorical): medium sampled
-  - levels host-associated: biofilm; extraction blank; extraction mock; mucus; PBS control; PCR blank; PCR mock; tissue; Tris-NaCl control
-  - levels free-living: extraction blank; extraction mock; exudates; incubation control; microscopy-slide control; PCR blank; PCR mock; tank water
-- ``type`` (categorical): whether it is a true sample or a control
-  - levels: control; sample
-- ``fragment_id`` (categorical): fragment ID; all fragments (clones) of a species were generated from a single mother colony; each fragment underwent a predetermined set of three treatments; while each fragment existed only once, this ID is not unique in the metadata as fragments were sampled three times (once per phase)
-  - naming: characters 1&ndash;3 = species name; 4&ndash;9 = treatments in chronological order; 9 = replicate number
-- ``species`` (taxa): taxonomic name of sampled species to deepest taxonomic level known
-  - levels: Caulerpa sp.; Dictyoceratida; Haliclona cnidata; Montipora digitata; Peyssonnelia sp.; Porites verrucosa; Sinularia sp.; Xenia sp.
-- ``taxonomic_group`` (categorical): taxonomic group to which sampled species belongs
-  - levels: macroalgae; soft coral; sponge; stony coral
-- ``phase`` (categorical): phase during which the sample was collected
-  - levels: P0; P1; P2
-- ``treatment`` (categorical): treatment the fragment was in at the time of sampling
-  - levels: monoculture; polyculture controlled; polyculture seminatural
-- ``treatment_binary`` (categorical): binary treatment classification
-  - levels: biodiverse; degraded
-- ``replicate`` (replicate): replicate number; each set of treatments was undergone by three fragments
-- ``tank`` (categorical): tank the fragment was kept in at the time of sampling; corresponding to the official tank name given by the Ocean2100 facility
-  - levels: A3; A5; B1; B3; B6; C2; C3; C4; C6; Ex
-- ``incubation_spot`` (categorical): spot in incubation chamber on which the incubation took place (only free-living)
-- ``incubation_time_start`` (time): time fragment was placed into incubation jar (only free-living)
-- ``incubation_time_end`` (time): time incubation jar was removed from incubation spot (only free-living)
-- ``sampling_date`` (date): date of sample collection
-- ``sampling_time`` (time): time of sample collection
-- ``filter_type`` (categorical): type of Sterivex filter used to collect sample (only free-living)
-  - levels: SVGPL10RC; SVGV010RS
-- ``weight_brutto`` (numeric trait): buoyant or wet weight of the fragment with hook, screw nut, silk, microscopy slide, label etc; buoyant weight measured for stony corals; wet weight measured for soft corals, macroalgae, and sponges (only free-living)
-- ``weight_netto`` (numeric trait): buoyant or wet weight calculated from weight_brutto minus weight_tara (hook, screw nut, silk, microscopy slide, label etc) (only free-living)
-- ``extraction_date`` (date): date of DNA extraction
-- ``extraction_round`` (numeric): round during which sample was extracted
-- ``plate_number`` (numeric): number of 96-well plate (1&ndash;4)
-- ``plate_position`` (alphanumeric): position of sample on 96-well plate (rows: A&ndash;H; columns: 01&ndash;12)
-- ``plate_position_sequential`` (numeric): unique numeric position of sample on 96-well plate (plate 1: 1&ndash;96; plate 2: 97&ndash;192; etc)
-- ``biomass_extraction_mg`` (numeric trait): biomass used for homogenisation and biofilm enrichment, respectively (sponge and macroalgae); coral-mucus biomass was not weighed (instead, 100 ul of mucus was used) (only host-associated)
-- ``gDNA_conc_ng_ul_QuantiFluor`` (numeric trait): genomic DNA concentration, measured with the Promega QuantiFluor dsDNA System (E2670); the accuracy at these low levels is not great and is simply indicative of an expected concentration range (only host-associated)
-- ``gDNA_conc_ng_ul`` (numeric trait): genomic DNA concentration, measured with the Qubit (1X HS kit)
-- ``primers`` (categorical): common name of the used forward and reverse primers (main reference for forward primer: Parada, A. E., Needham, D. M., & Fuhrman, J. A. (2016). Every base matters: assessing small subunit rRNA primers for marine microbiomes with mock communities, time series and global field samples. *Environmental microbiology*, *18*(5), 1403-1414. [doi.org/10.1111/1462-2920.13023](https://doi.org/10.1111/1462-2920.13023); for reverse primer: Apprill, A., McNally, S., Parsons, R., & Weber, L. (2015). Minor revision to V4 region SSU rRNA 806R gene primer greatly increases detection of SAR11 bacterioplankton. *Aquatic Microbial Ecology*, *75*(2), 129-137. [doi.org/10.3354/ame01753](https://doi.org/10.3354/ame01753))
-  - levels: 515F-Y/806R_B
-- ``primer_fwd_seq`` (categorical): nucleotide sequence of the 16S forward primer used (5' to 3' and without Nextera adapter sequence)
-  - levels: GTGYCAGCMGCCGCGGTAA
-- ``primer_rev_seq`` (categorical): nucleotide sequence of the 16S reverse primer used (5' to 3' and without Nextera adapter sequence)
-  - levels: GGACTACNVGGGTWTCTAAT
-- ``barcodes`` (id): unique barcode identifier (for both i5 and i7 sequences); these are unique dual index adapters from Illumina
-- ``barcode_rev_i7_seq`` (id): nucleotide sequence for the i7 index as the reverse complement (used for sample sheet)
-- ``barcode_fwd_i5_seq`` (id): nucleotide sequence of the i5 index (used for sample sheet)
-- ``aDNA_conc_ng_ul`` (numeric trait): concentration of the PCR product after clean-up, measured with the Nanodrop Eight
-- ``aDNA_A260_A280`` (numeric trait): purity of the PCR product after clean-up, measured with the Nanodrop Eight; these measurements are particularly inaccurate for samples with low DNA concentration
-- ``aDNA_A260_A230`` (numeric trait): purity of the PCR product after clean-up, measured with the Nanodrop Eight; these measurements are particularly inaccurate for samples with low DNA concentration
-- ``aDNA_smear_conc_nmol_l`` (numeric trait): smear concentration of the region of interest as measured with the Fragment Analyser (NGS SS kit); smear range from 400&ndash;500 bases  
-- ``pooling_conc`` (numeric trait): concentration in nmol/l at which sample was added to the library pool
-- ``sequencing_date`` (date): date of sequencing
-- ``sequencing_run`` (numeric): run during which sample was sequenced
-- ``notes`` (comment): any additional notes collected throughout the experiment
